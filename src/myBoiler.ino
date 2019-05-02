@@ -15,10 +15,10 @@ WiFiClient client;
 int endNum = 0;
 int hour = 0, minute = 0, sec = 0;
 int offH = 23, offM = 1;
-int onH = 23, onM = 0;
+int onH = 23, onM = 0
 int timeout = 0;
 bool logInFlag = false;
-String passwordMy = "djhjnf";
+String passwordMy = "804d41e4e902012c3441cc0a3b0ec42f";
 String turnOn = "Off";
 
 Ticker oneSec;
@@ -172,6 +172,8 @@ void loop() {
       char c = client.read();
       Serial.print(c);
     }
+
+
   //   if (!client.connected()) {
   //   Serial.println();
   //   Serial.println("disconnecting.");
@@ -259,6 +261,9 @@ String main_page(String turnOnStatus, String hourStatus, String minStatus, Strin
         data += "</form>";
     }
 
+    data += "</p>";
+    data += "<p>Login Flag: ";
+    data += logInFlag;
     data += "</p>";
     data += "</body> ";
     data += "</html> ";
