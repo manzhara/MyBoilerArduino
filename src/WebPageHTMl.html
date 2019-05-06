@@ -1,0 +1,87 @@
+<html>
+    <head>
+    <meta charset='utf-8'>
+    <title>Welcome to ESP</title>
+    </head>
+    <body>
+
+        <h1 align='center'> Welcome  </h1>
+
+        <table align='center'><tr><td width='40%' align='center'><p> <b>Status </b></p></td><td width='40%' align='center'><p> <b>Set </b></p></p></td></tr><tr><td width='40%'>
+        <input size='1' value='" + hourStatus + "' type='text' disabled>
+        <input size='1' value='" + minStatus + "' type='text' disabled>
+        <input size='1' value='" + secStatus + "' type='text' disabled>
+        <p> <b>Off hour : " + String(offH) + "</b></p>
+        <p> <b>Off minute : " + String(offM) + "</b></p>
+        <p> <b>On hour : " + String(onH) + "</b></p>
+        <p> <b>On minute : " + String(onM) + "</b></p>
+        <p> <b>turnOn Status : " + turnOnStatus + "</b></p>
+        </td><td width='40%'>
+
+        <form action='example_get' align='center'>
+        <input size='1' name='ha' type='text' >
+        <input size='1' name='mi' type='text' >
+        <input size='1' name='se' type='text' >
+        <p> <b> off hour : </b><input type='text' value='" + String(offH) + "' name='F_name'></p>
+        <p> <b> off minute : </b><input type='text' value='" + String(offM) + "' name='S_name'></p>
+        <p> <b> on hour : </b><input type='text' value='" + String(onH) + "' name='years'></p>
+        <p> <b> on minute : </b><input type='text' value='" + String(onM) + "' name='onM'></p>
+
+       <!-- if (turnOnStatus == "On") { -->
+            <p> <b> on TurnOn : </b><select name='turnOn'><option>On</option><option>Off</option></select></p>
+       <!-- } else { -->
+            <p> <b> TurnOn : </b><select name='turnOn'><option>Off</option><option>On</option></select></p>
+       <!-- } -->
+        </td></tr></table>
+        <script>
+        window.onload = function(){
+        (function(){
+        var d = new Date();
+        var timeControlS = document.querySelector('input[name = \"se\" ]');
+        var timeControlM = document.querySelector('input[name=\"mi\" ]');
+        var timeControlH = document.querySelector('input[name=\"ha\" ]');
+        timeControlS.value = d.getSeconds();
+        timeControlM.value = d.getMinutes();
+        timeControlH.value = d.getHours();
+        window.setTimeout(arguments.callee, 1000);
+        })();};
+        </script>
+
+        <p align='center'><button type='submit'>Send GET</button></p>
+        </form>
+   <!-- } else { -->
+        <div  class='login-form'>
+        <h1 align='center'>Login Form</h1>
+        <form action='example_get' align='center'>
+        <input type='password' name='pw' id='pw' placeholder='password'>
+        <input type='submit' id='login' value='log in'>
+          <script src='https://cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js'></script>
+          <script>(function () {'use strict'
+              var input = document.getElementById('pw');
+              document.getElementById('login').addEventListener('click',
+                function (event) {
+                  var req1 = md5(input.value);
+                  document.getElementById('pw').value = md5(input.value);
+                })}())
+            </script>
+        </form>
+        </div>
+   <!-- } -->
+    <p>
+   <!-- if (logInFlag) { -->
+        <form action='/' align='center'>
+        <button>Reload</button>
+        </form>
+        <form action='logout' align='center'>
+        <button type='submit'>LogOut</button>
+        </form>
+   <!-- } else { -->
+        <form action='/' align='center'>
+        <button>Reload</button>
+        </form>
+
+   <!-- } -->
+
+    </p>
+    </body>
+    </html>
