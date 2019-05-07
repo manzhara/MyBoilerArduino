@@ -15,7 +15,7 @@ WiFiClient client;
 int endNum = 0;
 int hour = 0, minute = 0, sec = 0;
 int offH = 23, offM = 1;
-int onH = 23, onM = 0
+int onH = 23, onM = 0;
 int timeout = 0;
 bool logInFlag = false;
 String passwordMy = "804d41e4e902012c3441cc0a3b0ec42f";
@@ -26,6 +26,8 @@ Ticker oneSec;
 
 
 ESP8266WebServer server(80);       // ініціалізація серверу на 80 порту
+
+void function() {}
 
 void changeSec() {
 
@@ -241,9 +243,17 @@ String main_page(String turnOnStatus, String hourStatus, String minStatus, Strin
     } else {
         data += "<div  class='login-form'>";
         data += "<h1 align='center'>Login Form</h1>";
-        data += "<form action='example_get'' align='center'>";
-        data += "<input type='password'' name='pw' placeholder='password'>";
-        data += "<input type='submit' value='log in'>";
+        data += "<form action='example_get' align='center'>";
+        data += "<input type='password' name='pw' id='pw' placeholder='password'>";
+        data += "<input type='submit' id='login' value='log in'>";
+        data += "<script src='https://cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js'></script>";
+        data += "<script>(function () {";
+        data += "var input = document.getElementById('pw');";
+        data += "document.getElementById('login').addEventListener('click',";
+        data += "  function (event) {";
+        data += "document.getElementById('pw').value = md5(input.value);";
+        data += "})}())";
+        data += "</script>";
         data += "</form>";
         data += "</div>";
     }
@@ -261,12 +271,12 @@ String main_page(String turnOnStatus, String hourStatus, String minStatus, Strin
         data += "</form>";
     }
 
-    data += "</p>";
-    data += "<p>Login Flag: ";
-    data += logInFlag;
-    data += "</p>";
-    data += "</body> ";
-    data += "</html> ";
+    // data += "</p>";
+    // data += "<p>Login Flag: ";
+    // data += logInFlag;
+    // data += "</p>";
+    // data += "</body> ";
+    // data += "</html> ";
 
     return data;
 }
