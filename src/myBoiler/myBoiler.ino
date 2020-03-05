@@ -27,8 +27,6 @@ Ticker oneSec;
 
 ESP8266WebServer server(80);       // ініціалізація серверу на 80 порту
 
-void function() {}
-
 void changeSec() {
 
     if (++sec > 59) {
@@ -142,7 +140,7 @@ void setup() {
 
     });
 
-    server.on("/example_post", HTTP_POST, []() {
+    server.on("/chengeTurnOn", HTTP_POST, []() {
       // if (logInFlag) {
           offH = server.arg("F_name").toInt();
           offM = server.arg("S_name").toInt();
