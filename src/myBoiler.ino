@@ -27,15 +27,14 @@ Ticker oneSec;
 
 ESP8266WebServer server(80);       // ініціалізація серверу на 80 порту
 
+void function() {}
+
 void changeSec() {
 
     if (++sec > 59) {
         sec = 0;
         minute++;
         ifOn();
-        // if ((timeout++ >= 15) && (timeout < 17)) {
-        //     logOut();
-        // }
     }
     if (minute > 59) {
         minute = 0;
@@ -72,19 +71,6 @@ void turnOnFun() {
     }
 }
 
-//Command to password
-// void validPassword(String passW) {
-//
-//     if (passW == passwordMy) {
-//         logInFlag = true;
-//         timeout = 0;
-//     }
-// }
-//
-// void logOut() {
-//     logInFlag = false;
-// }
-
 //SetUp
 void setup() {
     digitalWrite(LED, HIGH);
@@ -110,61 +96,45 @@ void setup() {
     });
 
     server.on("/example_get", []() {            // обробка GET запиту
-        // if (logInFlag) {
             offH = server.arg("F_name").toInt();
             offM = server.arg("S_name").toInt();
             onH = server.arg("years").toInt();
             onM = server.arg("onM").toInt();
             turnOn = server.arg("turnOn");
+            Serial.println(turnOn);
             hour = server.arg("ha").toInt();
             minute = server.arg("mi").toInt();
             sec = server.arg("se").toInt();
             turnOnFun();
-        // } else {
-        //     validPassword(server.arg("pw"));
-        // }
         Serial.println("Get responce");
-        server.send(200, "text/html", main_page(turnOn, String(hour), String(minute),
-                                                String(sec)/*, onM, turnOn, hour,minute,sce*/)); // відповідь на запит
-        //Serial.println(23);
+        server.send(200, "text/html", main_page(turnOn, String(hour), String(minute), String(sec))); // відповідь на запит
 
     });
 
     server.on("/logout", []() {            // обробка GET запиту
-
 //        logOut();
         Serial.println("LogOut");
-        server.send(200, "text/html", main_page(turnOn, String(hour), String(minute),
-                                                String(sec)/*, onM, turnOn, hour,minute,sce*/)); // відповідь на запит
-        //Serial.println(23);
-
+        server.send(200, "text/html", main_page(turnOn, String(hour), String(minute), String(sec))); // відповідь на запит
     });
 
-    server.on("/chengeTurnOn", HTTP_POST, []() {
-      // if (logInFlag) {
-          offH = server.arg("F_name").toInt();
-          offM = server.arg("S_name").toInt();
-          onH = server.arg("years").toInt();
-          onM = server.arg("onM").toInt();
+    server.on("/changeTurnOn", HTTP_POST, []() {
+          // offH = server.arg("F_name").toInt();
+          // offM = server.arg("S_name").toInt();
+          // onH = server.arg("years").toInt();
+          // onM = server.arg("onM").toInt();
           turnOn = server.arg("turnOn");
+          Serial.println(turnOn);
           hour = server.arg("ha").toInt();
           minute = server.arg("mi").toInt();
           sec = server.arg("se").toInt();
           turnOnFun();
-      // } else {
-      //     validPassword(server.arg("pw"));
-      // }
       Serial.println("Post responce");
-      server.send(200, "text/html", main_page(turnOn, String(hour), String(minute),
-                                              String(sec)/*, onM, turnOn, hour,minute,sce*/)); // відповідь на запит
+      server.send(200, "text/html", main_page(turnOn, String(hour), String(minute), String(sec))); // відповідь на запит
       });
     server.begin();                  // запуск серверу
-    //}
     oneSec.attach(1, changeSec);
-    turnOnFun();
-    Serial.println(1);
+    // turnOnFun();
 }
-
 
 void loop() {
     server.handleClient();           // перевірка серверу на нові запити
@@ -172,13 +142,6 @@ void loop() {
       char c = client.read();
       Serial.print(c);
     }
-
-
-  //   if (!client.connected()) {
-  //   Serial.println();
-  //   Serial.println("disconnecting.");
-  //   client.stop();
-  // }
 }
 
 String main_page(String turnOnStatus, String hourStatus, String minStatus, String secStatus) {
@@ -190,8 +153,8 @@ String main_page(String turnOnStatus, String hourStatus, String minStatus, Strin
     data += "</head> ";
     data += "<body> ";
 
-    // if (logInFlag) {
-        Serial.println("true");
+        Serial.println(turnOnStatus);
+        turnOnFun();
         data += "<h1 align='center'> Welcome  </h1> ";
 
         data += "<table align='center'><tr><td width='40%' align='center'><p> <b>Status </b></p></td><td width='40%' align='center'><p> <b>Set </b></p></p></td></tr><tr><td width='40%'>";
@@ -215,7 +178,7 @@ String main_page(String turnOnStatus, String hourStatus, String minStatus, Strin
         data += "<p> <b> on minute : </b><input type='text' value='" + String(onM) + "' name='onM'></p>";
 
         if (turnOnStatus == "On") {
-            data += "<p> <b> on TurnOn : </b><select name='turnOn'><option>On</option><option>Off</option></select></p>";
+            data += "<p> <b> TurnOn : </b><select name='turnOn'><option>On</option><option>Off</option></select></p>";
         } else {
             data += "<p> <b> TurnOn : </b><select name='turnOn'><option>Off</option><option>On</option></select></p>";
         }
@@ -238,43 +201,10 @@ String main_page(String turnOnStatus, String hourStatus, String minStatus, Strin
 
         data += "<p align='center'><button type='submit'>Send</button></p>";
         data += "</form>";
-    // } else {
-    //     data += "<div  class='login-form'>";
-    //     data += "<h1 align='center'>Login Form</h1>";
-    //     data += "<form action='example_get' align='center'>";
-    //     data += "<input type='password' name='pw' id='pw' placeholder='password'>";
-    //     data += "<input type='submit' id='login' value='log in'>";
-    //     data += "<script src='https://cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js'></script>";
-    //     data += "<script>(function () {";
-    //     data += "var input = document.getElementById('pw');";
-    //     data += "document.getElementById('login').addEventListener('click',";
-    //     data += "  function (event) {";
-    //     data += "document.getElementById('pw').value = md5(input.value);";
-    //     data += "})}())";
-    //     data += "</script>";
-    //     data += "</form>";
-    //     data += "</div>";
-    // }
+        data += "<form action='/' align='center'>";
+        data += "<button>Reload</button>";
+        data += "</form>";
     data += "<p>";
-    // if (logInFlag) {
-    //     data += "<form action='/' align='center'>";
-    //     data += "<button>Reload</button>";
-    //     data += "</form>";
-    //     data += "<form action='logout' align='center'>";
-    //     data += "<button type='submit'>LogOut</button>";
-    //     data += "</form>";
-    // } else {
-    //     data += "<form action='/' align='center'>";
-    //     data += "<button>Reload</button>";
-    //     data += "</form>";
-    // }
-
-    // data += "</p>";
-    // data += "<p>Login Flag: ";
-    // data += logInFlag;
-    // data += "</p>";
-    // data += "</body> ";
-    // data += "</html> ";
 
     return data;
 }
