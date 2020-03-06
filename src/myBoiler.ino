@@ -14,8 +14,8 @@ WiFiClient client;
 
 int endNum = 0;
 int hour = 0, minute = 0, sec = 0;
-int offH = 23, offM = 1;
-int onH = 23, onM = 0;
+int offH = 8, offM = 20;
+int onH = 5, onM = 0;
 int timeout = 0;
 // bool logInFlag = false;
 // String passwordMy = "804d41e4e902012c3441cc0a3b0ec42f";
@@ -23,7 +23,6 @@ String turnOn = "Off";
 
 Ticker oneSec;
 #define LED 2  //On board LED
-
 
 ESP8266WebServer server(80);       // ініціалізація серверу на 80 порту
 
@@ -101,14 +100,12 @@ void setup() {
             onH = server.arg("years").toInt();
             onM = server.arg("onM").toInt();
             turnOn = server.arg("turnOn");
-            Serial.println(turnOn);
             hour = server.arg("ha").toInt();
             minute = server.arg("mi").toInt();
             sec = server.arg("se").toInt();
+            Serial.println("Get responce");
             turnOnFun();
-        Serial.println("Get responce");
         server.send(200, "text/html", main_page(turnOn, String(hour), String(minute), String(sec))); // відповідь на запит
-
     });
 
     server.on("/logout", []() {            // обробка GET запиту
@@ -131,9 +128,9 @@ void setup() {
       Serial.println("Post responce");
       server.send(200, "text/html", main_page(turnOn, String(hour), String(minute), String(sec))); // відповідь на запит
       });
+
     server.begin();                  // запуск серверу
     oneSec.attach(1, changeSec);
-    // turnOnFun();
 }
 
 void loop() {
@@ -152,11 +149,7 @@ String main_page(String turnOnStatus, String hourStatus, String minStatus, Strin
     data += "<title>Welcome to ESP</title> ";
     data += "</head> ";
     data += "<body> ";
-
-        Serial.println(turnOnStatus);
-        turnOnFun();
         data += "<h1 align='center'> Welcome  </h1> ";
-
         data += "<table align='center'><tr><td width='40%' align='center'><p> <b>Status </b></p></td><td width='40%' align='center'><p> <b>Set </b></p></p></td></tr><tr><td width='40%'>";
         data += "<input size='1' value='" + hourStatus + "' type='text' disabled>";
         data += "<input size='1' value='" + minStatus + "' type='text' disabled>";
