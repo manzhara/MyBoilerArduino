@@ -4,7 +4,7 @@
 #include <ESP8266WebServer.h>      // необхідгий для роботи серверу
 #include <Ticker.h>
 
-const char *ssid = "Lab124";/*"LEAGOO_KIICAA_POWER";/"YouShellNotPassRouter";   //назва точки доступу*/
+const char *ssid = "YouShellNotPassRouter";//"Lab124";/*"LEAGOO_KIICAA_POWER";   //назва точки доступу*/
 const char *password = "";//"1234567890";
 
 //IPAddress ip(192, 168, 1, 17);  //статический IP
