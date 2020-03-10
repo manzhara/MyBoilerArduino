@@ -4,7 +4,8 @@
 #include <ESP8266WebServer.h>      // необхідгий для роботи серверу
 #include <Ticker.h>
 
-const char *ssid = "YouShellNotPassRouter";//"Lab124";/*"LEAGOO_KIICAA_POWER";   //назва точки доступу*/
+// const char *ssid = "YouShellNotPassRouter";//"Lab124";/*"LEAGOO_KIICAA_POWER";   //назва точки доступу*/
+const char *ssid = "Lab124";/*"LEAGOO_KIICAA_POWER";   //назва точки доступу*/
 const char *password = "";//"1234567890";
 
 //IPAddress ip(192, 168, 1, 17);  //статический IP
@@ -108,6 +109,20 @@ void setup() {
         server.send(200, "text/html", main_page(turnOn, String(hour), String(minute), String(sec))); // відповідь на запит
     });
 
+    server.on("/getInfo", []() {            // обробка GET запиту
+            // offH = server.arg("F_name").toInt();
+            // offM = server.arg("S_name").toInt();
+            // onH = server.arg("years").toInt();
+            // onM = server.arg("onM").toInt();
+            // turnOn = server.arg("turnOn");
+            // hour = server.arg("ha").toInt();
+            // minute = server.arg("mi").toInt();
+            // sec = server.arg("se").toInt();
+            Serial.println("Get Info responce");
+            // turnOnFun();
+        server.send(200, "text/html", infoResponse(turnOn, String(onH), String(onM), String(offH), String(offM))); // відповідь на запит
+    });
+
     server.on("/logout", []() {            // обробка GET запиту
 //        logOut();
         Serial.println("LogOut");
@@ -139,6 +154,10 @@ void loop() {
       char c = client.read();
       Serial.print(c);
     }
+}
+String infoResponse(String turnOnStatus, String hourOnStatus, String minOnStatus, String hourOffStatus, String minOffStatus) {
+    String data = turnOnStatus + "." + hourOnStatus + "." + minOnStatus + "." + hourOffStatus + "." + minOffStatus;
+    return data;
 }
 
 String main_page(String turnOnStatus, String hourStatus, String minStatus, String secStatus) {
