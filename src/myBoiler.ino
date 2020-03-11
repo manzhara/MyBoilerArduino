@@ -109,17 +109,22 @@ void setup() {
         server.send(200, "text/html", main_page(turnOn, String(hour), String(minute), String(sec))); // відповідь на запит
     });
 
-    server.on("/getInfo", []() {            // обробка GET запиту
-            // offH = server.arg("F_name").toInt();
-            // offM = server.arg("S_name").toInt();
-            // onH = server.arg("years").toInt();
-            // onM = server.arg("onM").toInt();
+    server.on("/set_time", []() {            // обробка GET запиту
+            offH = server.arg("F_name").toInt();
+            offM = server.arg("S_name").toInt();
+            onH = server.arg("years").toInt();
+            onM = server.arg("onM").toInt();
             // turnOn = server.arg("turnOn");
             // hour = server.arg("ha").toInt();
             // minute = server.arg("mi").toInt();
             // sec = server.arg("se").toInt();
+            Serial.println("Post responce");
+            turnOnFun();
+        // server.send(200, "text/html", main_page(turnOn, String(hour), String(minute), String(sec))); // відповідь на запит
+    });
+
+    server.on("/getInfo", []() {            // обробка GET запиту
             Serial.println("Get Info responce");
-            // turnOnFun();
         server.send(200, "text/html", infoResponse(turnOn, String(onH), String(onM), String(offH), String(offM))); // відповідь на запит
     });
 
@@ -130,10 +135,6 @@ void setup() {
     });
 
     server.on("/changeTurnOn", HTTP_POST, []() {
-          // offH = server.arg("F_name").toInt();
-          // offM = server.arg("S_name").toInt();
-          // onH = server.arg("years").toInt();
-          // onM = server.arg("onM").toInt();
           turnOn = server.arg("turnOn");
           Serial.println(turnOn);
           hour = server.arg("ha").toInt();
