@@ -4,12 +4,9 @@
 #include <ESP8266WebServer.h>      // необхідгий для роботи серверу
 #include <Ticker.h>
 
-const char *ssid = "Lab124";/*"LEAGOO_KIICAA_POWER";/"YouShellNotPassRouter";   //назва точки доступу*/
-const char *password = "Lab124phys";//"1234567890";
+const char *ssid = "Lab124";        //назва точки доступу
+const char *password = "Lab124phys";//пароль
 
-//IPAddress ip(192, 168, 1, 17);  //статический IP
-//IPAddress gateway(192, 168, 1, 18);
-//IPAddress subnet(255, 255, 255, 0);
 WiFiClient client;
 
 int endNum = 0;
@@ -23,7 +20,6 @@ String turnOn = "Off";
 
 Ticker oneSec;
 #define LED 2  //On board LED
-
 
 ESP8266WebServer server(80);       // ініціалізація серверу на 80 порту
 
@@ -270,13 +266,6 @@ String main_page(String turnOnStatus, String hourStatus, String minStatus, Strin
         data += "<button>Reload</button>";
         data += "</form>";
     }
-
-    // data += "</p>";
-    // data += "<p>Login Flag: ";
-    // data += logInFlag;
-    // data += "</p>";
-    // data += "</body> ";
-    // data += "</html> ";
 
     return data;
 }
